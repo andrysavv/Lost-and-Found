@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <style>
+        body {
+            background-color: darkcyan;
+        }
+        
+        .row {
+            margin: 0;
+        }
+        
+        .card {
+            margin-bottom: 1px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav class="blue-grey darken-1">
+        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul id="slide-out" class="sidenav">
+            <li>
+                <div class="user-view">
+                </div>
+            </li>
+            <li><a href="index.html" class="waves-effect"><i class="material-icons">clear_all</i>Всё</a></li>
+            <li><a href="found.html" class="waves-effect"><i class="material-icons">check</i>Найденное</a></li>
+            <li><a href="lost.html" class="waves-effect"><i class="material-icons">close</i>Потерянное</a></li>
+            <li>
+                <div class="divider"></div>
+            </li>
+            <li><a class="subheader">Subheader</a></li>
+        </ul>
+    </nav>
+    <div class="input-field inline">
+        <input type="text" class="search validate" placeholder="Поиск">
+        <button class="btn waves-effect waves-light" type="submit" name="action">Поиск
+    <i class="material-icons right">search</i>
+  </button>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script type="text/javascript">
+        $.ajax({
+                url: "http://127.0.0.1:8000/getall",
+                success: function(arg) {
+                    for (var i = 0; i < arg.length; i++) {
+                        var row = document.createElement('div');
+                        document.body.appendChild(row);
+                        row.classList.add('row');
+                        var col = document.createElement('div');
+                        row.appendChild(col);
+                        col.classList.add('col', 's12', 'm6');
+                        var card = document.createElement('div');
+                        col.appendChild(card);
+                        card.classList.add('card', 'blue-grey', 'darken-1');
+                        var content = document.createElement('div');
+                        card.appendChild(content);
+                        content.classList.add('card-content', 'white-text');
+                        var title = document.createElement('span');
+                        content.appendChild(title);
+                        title.classList.add('card-title');
+                        title.innerHTML = arg[i].title;
+                        var description = document.createElement('p');
+                        content.appendChild(description);
+                        description.classList.add('white-text', );
+                        description.innerHTML = arg[i].description;
+                        var contact = document.createElement('p');
+                        content.appendChild(contact);
+                        contact.classList.add('white-text', );
+                        contact.innerHTML = 'Контактные данные: ' + arg[i].contact;
+                        $(document).ready(function() {
+                            $('.sidenav').sidenav();
+                        });
+
+                    }
+                }
+
+            })
+            var btn = document.querySelector('.btn');
+                var inp = document.querySelector('.search');
+                btn.onclick = function() {
+                    $.ajax({
+                        url:'http://127.0.0.1:8000/search',
+                        success:function(result){
+                            console.log(result);
+                        },
+                        data:{
+                            search:inp.value
+                        }
+                    })
+                }
+    </script>
+</body>
+
+</html>

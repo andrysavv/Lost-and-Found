@@ -1,0 +1,36 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+use Illuminate\Http\Request;
+Route::get('/', function () {
+    return view('welcome');
+});
+Route::get('/getall', function() {
+    header('Access-Control-Allow-Origin:*');
+    $items = App\Item::all();
+    return $items;
+});
+Route::get('/found', function() {
+    header('Access-Control-Allow-Origin:*');
+    $items = App\Item::where('status','1')->get();
+    return $items;
+});
+Route::get('/lost', function() {
+    header('Access-Control-Allow-Origin:*');
+    $items = App\Item::where('status','0')->get();
+    return $items;
+});
+Route::get('/search', function(Request $req){
+    header('Access-Control-Allow-Origin:*');
+    $result=App\Item::where('title', 'like', '%'.$req->search.'%')->orWhere('description', 'like', '%'.$req->search.'%')->get();
+    return $result;
+});
